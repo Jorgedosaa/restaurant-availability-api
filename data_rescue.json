@@ -1,0 +1,20 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$xpXycSe9VcEZOU0LDsWtrv$f6OPUbPrXEQdW54p8GcnJ6SNnfUaxat3RW76t/JGtq8=",
+    "last_login": "2026-02-03T10:52:33.881Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@restaurant.local",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-02-03T10:25:22.378Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

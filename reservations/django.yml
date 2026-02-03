@@ -1,0 +1,70 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    # Configuración del servicio de Base de Datos (PostgreSQL)
+    services:
+      db:
+        image: postgres:15
+        env:
+          POSTGRES_DB: restaurant_availability
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # Healthcheck para asegurar que la BD esté lista antes de correr los tests
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip' # Habilita caché de dependencias para builds más rápidos
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Migrations
+      env:
+        # Mock de variables de entorno para settings.py
+        SECRET_KEY: 'django-insecure-test-key-for-ci'
+        DEBUG: 'False'
+        ALLOWED_HOSTS: '127.0.0.1,localhost'
+        DB_NAME: restaurant_availability
+        DB_USER: postgres
+        DB_PASSWORD: password
+        DB_HOST: localhost
+        DB_PORT: 5432
+      run: |
+        python manage.py migrate
+
+    - name: Run Tests
+      env:
+        # Las mismas variables son necesarias para los tests
+        SECRET_KEY: 'django-insecure-test-key-for-ci'
+        DEBUG: 'False'
+        ALLOWED_HOSTS: '127.0.0.1,localhost'
+        DB_NAME: restaurant_availability
+        DB_USER: postgres
+        DB_PASSWORD: password
+        DB_HOST: localhost
+        DB_PORT: 5432
+      run: |
+        python manage.py test

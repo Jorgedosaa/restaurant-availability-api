@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: restaurant_db
+    environment:
+      POSTGRES_DB: restaurant_availability
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTHENTICATION_METHOD: trust
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - restaurant_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: restaurant_api
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py compilemessages &&
+             gunicorn --bind 0.0.0.0:8000 --workers 4 --reload config.wsgi:application"
+    volumes:
+      - ..:/app
+      - static_volume:/app/static
+    ports:
+      - "8000:8000"
+    environment:
+      DEBUG: "True"
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/restaurant_availability
+      SECRET_KEY: your-secret-key-change-in-production
+      ALLOWED_HOSTS: localhost,127.0.0.1,web
+      LANGUAGE_CODE: es-es
+      TIME_ZONE: America/Mexico_City
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - restaurant_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: restaurant_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - restaurant_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  static_volume:
+
+networks:
+  restaurant_network:
+    driver: bridge

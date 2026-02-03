@@ -1,0 +1,217 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Restaurant Availability\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-03 10:00+0000\n"
+"PO-Revision-Date: 2026-02-03 10:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: availability/models.py
+msgid "Nombre"
+msgstr "Nombre"
+
+#: availability/models.py
+msgid "Descripción"
+msgstr "Descripción"
+
+#: availability/models.py
+msgid "Email"
+msgstr "Correo Electrónico"
+
+#: availability/models.py
+msgid "Teléfono"
+msgstr "Teléfono"
+
+#: availability/models.py
+msgid "Dirección"
+msgstr "Dirección"
+
+#: availability/models.py
+msgid "Ciudad"
+msgstr "Ciudad"
+
+#: availability/models.py
+msgid "País"
+msgstr "País"
+
+#: availability/models.py
+msgid "Capacidad por defecto"
+msgstr "Capacidad por defecto"
+
+#: availability/models.py
+msgid "Restaurante"
+msgstr "Restaurante"
+
+#: availability/models.py
+msgid "Restaurantes"
+msgstr "Restaurantes"
+
+#: availability/models.py
+msgid "Lunes"
+msgstr "Lunes"
+
+#: availability/models.py
+msgid "Martes"
+msgstr "Martes"
+
+#: availability/models.py
+msgid "Miércoles"
+msgstr "Miércoles"
+
+#: availability/models.py
+msgid "Jueves"
+msgstr "Jueves"
+
+#: availability/models.py
+msgid "Viernes"
+msgstr "Viernes"
+
+#: availability/models.py
+msgid "Sábado"
+msgstr "Sábado"
+
+#: availability/models.py
+msgid "Domingo"
+msgstr "Domingo"
+
+#: availability/models.py
+msgid "Día de la semana"
+msgstr "Día de la semana"
+
+#: availability/models.py
+msgid "Hora de inicio"
+msgstr "Hora de inicio"
+
+#: availability/models.py
+msgid "Hora de fin"
+msgstr "Hora de fin"
+
+#: availability/models.py
+msgid "Capacidad"
+msgstr "Capacidad"
+
+#: availability/models.py
+msgid "Disponible"
+msgstr "Disponible"
+
+#: availability/models.py
+msgid "Regla de disponibilidad"
+msgstr "Regla de disponibilidad"
+
+#: availability/models.py
+msgid "Reglas de disponibilidad"
+msgstr "Reglas de disponibilidad"
+
+#: availability/models.py
+msgid "Temporada"
+msgstr "Temporada"
+
+#: availability/models.py
+msgid "Temporadas"
+msgstr "Temporadas"
+
+#: availability/models.py
+msgid "Fecha de inicio"
+msgstr "Fecha de inicio"
+
+#: availability/models.py
+msgid "Fecha de fin"
+msgstr "Fecha de fin"
+
+#: availability/models.py
+msgid "Multiplicador de capacidad"
+msgstr "Multiplicador de capacidad"
+
+#: availability/models.py
+msgid "Activa"
+msgstr "Activa"
+
+#: availability/models.py
+msgid "Fecha de excepción"
+msgstr "Fecha de excepción"
+
+#: availability/models.py
+msgid "Fechas de excepción"
+msgstr "Fechas de excepción"
+
+#: availability/models.py
+msgid "Fecha"
+msgstr "Fecha"
+
+#: availability/models.py
+msgid "Motivo"
+msgstr "Motivo"
+
+#: availability/models.py
+msgid "¿Cerrado?"
+msgstr "¿Cerrado?"
+
+#: availability/models.py
+msgid "Capacidad especial"
+msgstr "Capacidad especial"
+
+#: reservations/models.py
+msgid "Nombre del cliente"
+msgstr "Nombre del cliente"
+
+#: reservations/models.py
+msgid "Email del cliente"
+msgstr "Correo Electrónico del cliente"
+
+#: reservations/models.py
+msgid "Teléfono del cliente"
+msgstr "Teléfono del cliente"
+
+#: reservations/models.py
+msgid "Fecha de reservación"
+msgstr "Fecha de reservación"
+
+#: reservations/models.py
+msgid "Hora de reservación"
+msgstr "Hora de reservación"
+
+#: reservations/models.py
+msgid "Número de personas"
+msgstr "Número de personas"
+
+#: reservations/models.py
+msgid "Solicitudes especiales"
+msgstr "Solicitudes especiales"
+
+#: reservations/models.py
+msgid "Estado"
+msgstr "Estado"
+
+#: reservations/models.py
+msgid "Pendiente"
+msgstr "Pendiente"
+
+#: reservations/models.py
+msgid "Confirmada"
+msgstr "Confirmada"
+
+#: reservations/models.py
+msgid "Cancelada"
+msgstr "Cancelada"
+
+#: reservations/models.py
+msgid "Completada"
+msgstr "Completada"
+
+#: reservations/models.py
+msgid "Reservación"
+msgstr "Reservación"
+
+#: reservations/models.py
+msgid "Reservaciones"
+msgstr "Reservaciones"
