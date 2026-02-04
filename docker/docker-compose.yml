@@ -8,6 +8,7 @@ services:
       POSTGRES_DB: restaurant_availability
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      # 'trust' está bien para dev local, agiliza la conexión
       POSTGRES_HOST_AUTHENTICATION_METHOD: trust
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -17,7 +18,7 @@ services:
       - restaurant_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
+      interval: 5s
       timeout: 5s
       retries: 5
 
@@ -26,24 +27,27 @@ services:
       context: ..
       dockerfile: docker/Dockerfile
     container_name: restaurant_api
+    # NOTA: Si falla 'compilemessages', elimina esa línea o instala 'gettext' en Dockerfile
     command: >
       sh -c "python manage.py migrate &&
              python manage.py compilemessages &&
-             gunicorn --bind 0.0.0.0:8000 --workers 4 --reload config.wsgi:application"
+             gunicorn --bind 0.0.0.0:8000 --workers 2 --reload config.wsgi:application"
     volumes:
       - ..:/app
       - static_volume:/app/static
     ports:
       - "8000:8000"
+    # Leemos las variables del archivo .env de la raíz
+    env_file:
+      - ../.env
+    # Variables específicas que sobrescriben al .env solo para Docker
     environment:
-      DEBUG: "True"
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/restaurant_availability
-      SECRET_KEY: your-secret-key-change-in-production
-      ALLOWED_HOSTS: localhost,127.0.0.1,web
-      LANGUAGE_CODE: es-es
-      TIME_ZONE: America/Mexico_City
+      - DB_HOST=db
+      - DB_PORT=5432
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     networks:
       - restaurant_network
@@ -57,8 +61,8 @@ services:
       - restaurant_network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
+      interval: 5s
+      timeout: 3s
       retries: 5
 
 volumes:

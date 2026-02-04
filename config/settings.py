@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from decouple import config, Csv
 
@@ -39,8 +40,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',      # <--- IMPORTANTE: Antes de CommonMiddleware
+    'corsheaders.middleware.CorsMiddleware',     
     'django.middleware.locale.LocaleMiddleware',  # Middleware de i18n
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -125,11 +127,27 @@ USE_TZ = True
 
 LOCALE_PATHS = [ BASE_DIR / 'locale' ]
 
-# Static files (CSS, JavaScript, Images)
+# URL base para acceder a los estáticos
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles' # Donde se recolectan al hacer deploy
-STATICFILES_DIRS = [BASE_DIR / 'static']
 
+# Carpeta donde Django 'recolectará' todos los archivos para producción (Docker/Nginx)
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Carpeta donde pones tus estilos/js propios en desarrollo
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+# --- WHITENOISE CONFIGURATION (Django 5.0/6.0+) ---
+# Esto habilita la compresión y el cacheo agresivo para producción.
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

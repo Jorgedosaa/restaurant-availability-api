@@ -1,4 +1,5 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
+
 
 # Establecer variable de entorno
 ENV PYTHONUNBUFFERED=1 \
@@ -6,7 +7,10 @@ ENV PYTHONUNBUFFERED=1 \
 
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
-    postgresql-client \
+    gcc \
+    libpq-dev \
+    netcat-openbsd \
+    gettext \
     && rm -rf /var/lib/apt/lists/*
 
 # Crear directorio de trabajo
