@@ -1,56 +1,48 @@
-# Restaurant Availability API
+# Restaurant Availability Engine
 
-API profesional y escalable para gestionar disponibilidad de restaurantes y reservaciones.
+![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
+![Django](https://img.shields.io/badge/Django-4.2+-green.svg)
+![DRF](https://img.shields.io/badge/DRF-3.14+-red.svg)
+![Docker](https://img.shields.io/badge/Docker-Enabled-blue.svg)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## 📋 Descripción
+**Restaurant Availability Engine** es una solución backend de nivel empresarial diseñada para la gestión eficiente y escalable de disponibilidad y reservaciones en tiempo real. Construido sobre **Django** y **Django REST Framework**, este sistema implementa una arquitectura modular avanzada que garantiza flexibilidad, mantenibilidad y alto rendimiento.
 
-**Restaurant Availability** es un backend Django REST Framework (DRF) para gestionar:
+El sistema permite a los restaurantes gestionar reglas de operación complejas, incluyendo horarios dinámicos, ajustes por temporada, excepciones de calendario y control de capacidad granular.
 
-- Disponibilidad de restaurantes por día y hora
-- Reglas de disponibilidad con capacidades
-- Temporadas con multiplicadores de capacidad
-- Fechas de excepción (cierres especiales)
-- Reservaciones con validación de disponibilidad
-- Internacionalización (ES/EN)
+---
 
-## 🏗️ Arquitectura
+## 🏗️ Arquitectura y Diseño
 
-```
-restaurant_availability/
-├── availability/              # App de disponibilidad
-│   ├── models.py             # Modelos: Restaurant, AvailabilityRule, Season, ExceptionDate
-│   ├── serializers.py        # Serializadores DRF
-│   ├── views.py              # ViewSets y acciones
-│   ├── urls.py               # Rutas API
-│   ├── services.py           # Lógica de negocio (AvailabilityService)
-│   ├── tests.py              # Tests unitarios
-│   └── admin.py              # Configuración Django Admin
-│
-├── reservations/             # App de reservaciones
-│   ├── models.py             # Modelo: Reservation
-│   ├── serializers.py        # Serializadores con validación
-│   ├── views.py              # ViewSet con acciones (confirm, cancel, complete)
-│   ├── urls.py               # Rutas API
-│   ├── tests.py              # Tests unitarios
-│   └── admin.py              # Configuración Django Admin
-│
-├── config/                   # Configuración Django
-│   ├── settings.py           # Configuración principal
-│   ├── urls.py               # URLs principales
-│   └── wsgi.py
-│
-├── docker/                   # Archivos Docker
-│   ├── Dockerfile            # Imagen del contenedor
-│   └── docker-compose.yml    # Orquestación de servicios
-│
-├── locale/                   # Archivos de traducción
-│   ├── es/LC_MESSAGES/       # Traducción al español
-│   └── en/LC_MESSAGES/       # Traducción al inglés
-│
-├── static/                   # Archivos estáticos
-├── templates/                # Plantillas Django
-├── manage.py
-└── requirements.txt
+El núcleo del sistema se basa en una **Arquitectura Modular** utilizando el patrón **Facade**. El servicio principal, `AvailabilityService`, actúa como un orquestador central que coordina la lógica de negocio a través de motores especializados, asegurando el Principio de Responsabilidad Única (SRP).
+
+### Componentes del Motor
+
+1.  **ExceptionEngine**: Gestiona cierres especiales y capacidades personalizadas por fecha.
+2.  **RuleEngine**: Determina las reglas base de operación (días y horarios).
+3.  **SeasonEngine**: Aplica multiplicadores de capacidad basados en temporadas (alta/baja).
+4.  **CapacityEngine**: Calcula la ocupación en tiempo real y valida contra límites físicos.
+5.  **SlotGenerator**: Genera intervalos de tiempo disponibles dinámicamente.
+
+### Flujo de Decisión (Availability Engine)
+
+```mermaid
+graph TD
+    A[Request: Check Availability] --> B{ExceptionEngine}
+    B -- Is Closed? --> C[Return False]
+    B -- Has Custom Capacity? --> D[CapacityEngine: Check vs Custom]
+    B -- No Exception --> E{RuleEngine}
+
+    E -- No Rule / Not Available --> F[Return False]
+    E -- Rule Found --> G[SeasonEngine]
+
+    G -- Apply Multiplier --> H[Calculate Max Capacity]
+    H --> I[CapacityEngine: Check vs Calculated]
+
+    D --> J{Is Available?}
+    I --> J
+    J -- Yes --> K[Return True]
+    J -- No --> L[Return False]
 ```
 
 ## 🚀 Quick Start
